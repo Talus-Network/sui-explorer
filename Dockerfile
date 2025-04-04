@@ -20,7 +20,7 @@ FROM nginx:alpine
 
 # Copy the build output to the Nginx HTML directory
 COPY --from=builder /app/apps/explorer/build /usr/share/nginx/html
-COPY --from=builder /app/docker-entrypoint.sh /docker-entrypoint.sh
+COPY --from=builder /app/40-env-to-js.sh /docker-entrypoint.d/40-env-to-js.sh
 
 # Expose port 80
 EXPOSE 80
