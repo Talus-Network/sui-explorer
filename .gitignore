@@ -45,6 +45,7 @@ node_modules
 .turbo
 
 # App build directories
+apps/exploder/build/*
 dist/
 storybook-static/
 web-ext-artifacts/
