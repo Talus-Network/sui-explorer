@@ -1,39 +1,29 @@
 // Copyright (c) Mysten Labs, Inc.
 // SPDX-License-Identifier: Apache-2.0
 
-import { SocialDiscord24, SocialTwitter24 } from "@mysten/icons";
+import { SocialDiscord24, SocialTwitter24 } from '@mysten/icons';
 import { type ReactNode } from 'react';
 
 type FooterItem = {
-	category: string;
-	items: { title: string; children: ReactNode; href: string }[];
+  category: string;
+  items: { title: string; children: ReactNode; href: string }[];
 };
 export type FooterItems = FooterItem[];
 
 function FooterIcon({ children }: { children: ReactNode }) {
-	return <div className="flex items-center text-steel-darker">{children}</div>;
+  return <div className="flex items-center text-steel-darker">{children}</div>;
 }
 
 export const footerLogoLink = {
-  title: "Suiware.io",
-  href: "https://suiware.io",
+  title: 'taluslabs',
+  href: 'https://talus.network/',
 };
 
 export const footerLinks = [
-  // { title: 'Blog', href: 'https://mystenlabs.com/blog' },
-  // {
-  // 	title: 'Whitepaper',
-  // 	href: 'https://github.com/MystenLabs/sui/blob/main/doc/paper/sui.pdf',
-  // },
-  // {
-  // 	title: 'Docs',
-  // 	href: 'https://docs.mystenlabs.com',
-  // },
   {
-    title: "GitHub",
-    href: "https://github.com/suiware",
+    title: 'GitHub',
+    href: 'https://github.com/Talus-Network',
   },
-  // { title: 'Press', href: 'https://mystenlabs.com/#community' },
 ];
 
 export const socialLinks = [
@@ -43,7 +33,7 @@ export const socialLinks = [
         <SocialDiscord24 />
       </FooterIcon>
     ),
-    href: "https://discord.com/invite/HuDPpXz4Hx",
+    href: 'https://discord.com/invite/talusnetwork',
   },
   {
     children: (
@@ -51,25 +41,8 @@ export const socialLinks = [
         <SocialTwitter24 />
       </FooterIcon>
     ),
-    href: "https://twitter.com/suiware_",
+    href: 'https://discord.com/invite/talusnetwork',
   },
-  // {
-  // 	children: (
-  // 		<FooterIcon>
-  // 			<SocialLinkedin24 />
-  // 		</FooterIcon>
-  // 	),
-  // 	href: 'https://www.linkedin.com/company/mysten-labs/',
-  // },
 ];
 
-export const legalLinks = [
-	{
-		title: 'Terms & Conditions',
-		href: 'https://mystenlabs.com/legal#termsofservice',
-	},
-	{
-		title: 'Privacy Policy',
-		href: 'https://mystenlabs.com/legal#privacypolicy',
-	},
-];
+export const legalLinks = [];

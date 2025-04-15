@@ -12,7 +12,7 @@ import { queryClient } from './utils/queryClient';
 // See also /docker-entrypoint.sh
 // See also /apps/explorer/src/types/env.d.ts
 export const DEFAULT_NETWORK = window.__ENV__?.SUI_RPC_URL || '';
-
+console.log(DEFAULT_NETWORK);
 export const NetworkContext = createContext<
   [Network | string, (network: Network | string) => void]
 >(['', () => null]);
