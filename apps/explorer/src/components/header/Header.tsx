@@ -7,9 +7,12 @@ import { useEffect, useState } from 'react';
 import { LinkWithQuery } from '~/ui/utils/LinkWithQuery';
 import NetworkSelect from '../network/Network';
 import Search from '../search/Search';
+import { useAuth } from '~/contexts/AuthContext'; // Import the auth hook
 
 function Header() {
   const [isScrolled, setIsScrolled] = useState(window.scrollY > 0);
+  const { isAuthenticated, logout } = useAuth();
+
   useEffect(() => {
     const callback = () => {
       setIsScrolled(window.scrollY > 0);
@@ -35,11 +38,19 @@ function Header() {
         >
           Talus Devnet Sui Explorer
         </LinkWithQuery>
-        <div className="flex w-full gap-2">
+        <div className="flex w-full gap-2 items-center">
           <div className="flex-1">
             <Search />
           </div>
           <NetworkSelect />
+          {isAuthenticated && (
+            <button
+              onClick={logout}
+              className="ml-4 h-10 rounded border border-transparent bg-hero-darkest/5 px-4 font-mono text-body font-medium leading-9 text-hero-darkest/80 transition hover:bg-hero-darkest/10 focus:bg-hero-darkest/10"
+            >
+              Logout
+            </button>
+          )}
         </div>
       </div>
     </header>

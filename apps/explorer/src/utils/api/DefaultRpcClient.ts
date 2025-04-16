@@ -5,6 +5,7 @@ import {
   SuiHTTPTransport,
   getFullnodeUrl,
 } from '@mysten/sui.js/client';
+import { useAuth } from '../../contexts/AuthContext';
 
 export enum Network {
   LOCAL = 'LOCAL',
@@ -29,6 +30,8 @@ export const createSuiClient = (
   config?: { url: string }
 ) => {
   const existingClient = defaultClientMap.get(network);
+  const { credentials } = useAuth();
+
   if (existingClient) return existingClient;
 
   // Handle both enum values and direct URL strings
@@ -60,6 +63,11 @@ export const createSuiClient = (
     // If URL parsing fails, continue with original URL
   }
 
+  // Use provided credentials if available
+  if (credentials?.username && credentials?.password) {
+    username = credentials.username;
+    password = credentials.password;
+  }
   // Fall back to environment variables if no credentials in URL
   if (!username || !password) {
     username = username || import.meta.env?.VITE_SUI_RPC_USERNAME;

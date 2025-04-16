@@ -7,6 +7,7 @@ import { useSearchParams } from 'react-router-dom';
 
 import { Network } from './utils/api/DefaultRpcClient';
 import { queryClient } from './utils/queryClient';
+import { useAuth } from './contexts/AuthContext';
 
 // See also /apps/explorer/public/env-config.js
 // See also /docker-entrypoint.sh
@@ -23,17 +24,16 @@ export function useNetworkContext() {
 // TODO: Remove this flexibility.
 export function useNetwork(): [string, (network: Network | string) => void] {
   const [searchParams, setSearchParams] = useSearchParams();
+  const { credentials } = useAuth();
 
   const network = useMemo(() => {
     const networkParam = searchParams.get('network');
-
     if (
       networkParam &&
       (Object.values(Network) as string[]).includes(networkParam.toUpperCase())
     ) {
       return networkParam.toUpperCase();
     }
-
     return networkParam ?? DEFAULT_NETWORK;
   }, [searchParams]);
 
@@ -41,12 +41,26 @@ export function useNetwork(): [string, (network: Network | string) => void] {
     // When resetting the network, we reset the query client at the same time:
     queryClient.cancelQueries();
     queryClient.clear();
+    // Apply credentials to URLs if available
+    if (typeof network === 'string' && network.includes('://') && credentials) {
+      try {
+        const url = new URL(network);
+        // Only set credentials if not already present in the URL
+        if (!url.username && !url.password) {
+          url.username = credentials.username;
+          url.password = credentials.password;
+          setSearchParams({ network: url.toString() });
+          return;
+        }
+      } catch (e) {
+        // Invalid URL, fall through to default behavior
+      }
+    }
 
-    // Check if this is a URL with auth credentials
+    // Handle URLs with auth credentials without lowercasing
     if (typeof network === 'string' && network.includes('://')) {
       try {
         const url = new URL(network);
-        // If URL has username/password, don't lowercase
         if (url.username || url.password) {
           setSearchParams({ network });
           return;
@@ -56,7 +70,6 @@ export function useNetwork(): [string, (network: Network | string) => void] {
       }
     }
 
-    // Default behavior for network names
     setSearchParams({ network: network.toLowerCase() });
   };
 
