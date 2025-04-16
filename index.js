@@ -42,7 +42,7 @@ const main = async () => {
             env: {
               PM2_SERVE_PATH: path.join(
                 _getCliDirectory(),
-                '/apps/explorer/build/'
+                '/apps/explorer/dist/'
               ),
               PM2_SERVE_PORT: 9001,
               PM2_SERVE_SPA: 'true',
