@@ -12,7 +12,6 @@ import { queryClient } from './utils/queryClient';
 // See also /docker-entrypoint.sh
 // See also /apps/explorer/src/types/env.d.ts
 export const DEFAULT_NETWORK = window.__ENV__?.SUI_RPC_URL || '';
-console.log(DEFAULT_NETWORK);
 export const NetworkContext = createContext<
   [Network | string, (network: Network | string) => void]
 >(['', () => null]);
@@ -43,6 +42,21 @@ export function useNetwork(): [string, (network: Network | string) => void] {
     queryClient.cancelQueries();
     queryClient.clear();
 
+    // Check if this is a URL with auth credentials
+    if (typeof network === 'string' && network.includes('://')) {
+      try {
+        const url = new URL(network);
+        // If URL has username/password, don't lowercase
+        if (url.username || url.password) {
+          setSearchParams({ network });
+          return;
+        }
+      } catch (e) {
+        // Invalid URL, fall through to default behavior
+      }
+    }
+
+    // Default behavior for network names
     setSearchParams({ network: network.toLowerCase() });
   };
 

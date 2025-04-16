@@ -41,7 +41,7 @@ export const socialLinks = [
         <SocialTwitter24 />
       </FooterIcon>
     ),
-    href: 'https://discord.com/invite/talusnetwork',
+    href: 'https://x.com/TalusNetwork',
   },
 ];
 
