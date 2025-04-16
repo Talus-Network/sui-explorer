@@ -10,7 +10,8 @@ import { fileURLToPath } from 'url';
 // @todo Read project name and new-issue url from package.json.
 const APP_NAME = 'Talus Devnet Sui Explorer';
 const APP_URL = 'http://localhost:9001';
-const REPORT_ISSUE_URL = 'https://github.com/suiware/sui-explorer/issues/new';
+const REPORT_ISSUE_URL =
+  'https://github.com/Talus-Network/sui-explorer/issues/new';
 
 const main = async () => {
   // Commands.
