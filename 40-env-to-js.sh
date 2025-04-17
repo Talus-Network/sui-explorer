@@ -15,12 +15,13 @@ ENVJS=/usr/share/nginx/html/env-config.js
 cat <<EOF >$ENVJS
 window.__ENV__ = {
   SUI_RPC_URL: "${SUI_RPC_URL}",
+  USE_AUTH: ${USE_AUTH},
 };
 EOF
 
 if [ -z "${SUI_RPC_URL}" ]; then
-    echo
-    echo "SUI_RPC_URL is not set."
+  echo
+  echo "SUI_RPC_URL is not set."
 fi
 
 cat $ENVJS

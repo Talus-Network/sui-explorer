@@ -15,21 +15,21 @@ import {
   offset,
   shift,
   useFloating,
-} from "@floating-ui/react";
-import { Popover } from "@headlessui/react";
-import { useZodForm } from "@mysten/core";
-import { HamburgerRest16 } from "@mysten/icons";
-import { Text } from "@mysten/ui";
-import clsx from "clsx";
-import { AnimatePresence, motion } from "framer-motion";
-import { useEffect, useState } from "react";
-import { z } from "zod";
+} from '@floating-ui/react';
+import { Popover } from '@headlessui/react';
+import { useZodForm } from '@mysten/core';
+import { HamburgerRest16 } from '@mysten/icons';
+import { Text } from '@mysten/ui';
+import clsx from 'clsx';
+import { AnimatePresence, motion } from 'framer-motion';
+import { useEffect, useState } from 'react';
+import { z } from 'zod';
 
-import { NavItem } from "./NavItem";
-import { ReactComponent as CheckIcon } from "../icons/check_16x16.svg";
-import { ReactComponent as MenuIcon } from "../icons/menu.svg";
+import { NavItem } from './NavItem';
+import { ReactComponent as CheckIcon } from '../icons/check_16x16.svg';
+import { ReactComponent as MenuIcon } from '../icons/menu.svg';
 
-import type { ComponentProps, ReactNode } from "react";
+import type { ComponentProps, ReactNode } from 'react';
 
 export interface NetworkOption {
   id: string;
@@ -45,12 +45,12 @@ export interface NetworkSelectProps {
 }
 
 enum NetworkState {
-  UNSELECTED = "UNSELECTED",
-  PENDING = "PENDING",
-  SELECTED = "SELECTED",
+  UNSELECTED = 'UNSELECTED',
+  PENDING = 'PENDING',
+  SELECTED = 'SELECTED',
 }
 
-interface SelectableNetworkProps extends ComponentProps<"div"> {
+interface SelectableNetworkProps extends ComponentProps<'div'> {
   state: NetworkState;
   children: ReactNode;
   onClick(): void;
@@ -67,25 +67,25 @@ function SelectableNetwork({
       role="button"
       onClick={onClick}
       className={clsx(
-        "flex items-start gap-3 rounded-md px-1.25 py-2 text-body font-semibold hover:bg-gray-40 ui-active:bg-gray-40",
+        'flex items-start gap-3 rounded-md px-1.25 py-2 text-body font-semibold hover:bg-gray-40 ui-active:bg-gray-40',
         state !== NetworkState.UNSELECTED
-          ? "text-steel-darker"
-          : "text-steel-dark"
+          ? 'text-steel-darker'
+          : 'text-steel-dark'
       )}
       {...props}
     >
       <CheckIcon
-        className={clsx("flex-shrink-0", {
-          "text-success": state === NetworkState.SELECTED,
-          "text-steel": state === NetworkState.PENDING,
-          "text-gray-45": state === NetworkState.UNSELECTED,
+        className={clsx('flex-shrink-0', {
+          'text-success': state === NetworkState.SELECTED,
+          'text-steel': state === NetworkState.PENDING,
+          'text-gray-45': state === NetworkState.UNSELECTED,
         })}
       />
       <div className="mt-px">
         <Text
           variant="body/semibold"
           color={
-            state === NetworkState.SELECTED ? "steel-darker" : "steel-dark"
+            state === NetworkState.SELECTED ? 'steel-darker' : 'steel-dark'
           }
         >
           {children}
@@ -96,7 +96,17 @@ function SelectableNetwork({
 }
 
 const CustomRPCSchema = z.object({
-  url: z.string().url(),
+  url: z.string().refine(
+    (value) => {
+      try {
+        const url = new URL(value);
+        return true;
+      } catch {
+        return false;
+      }
+    },
+    { message: 'Invalid URL format' }
+  ),
 });
 
 function CustomRPCInput({
@@ -108,7 +118,7 @@ function CustomRPCInput({
 }) {
   const { register, handleSubmit, formState } = useZodForm({
     schema: CustomRPCSchema,
-    mode: "all",
+    mode: 'all',
     defaultValues: {
       url: value,
     },
@@ -124,13 +134,14 @@ function CustomRPCInput({
       className="relative flex items-center rounded-md"
     >
       <input
-        {...register("url")}
+        {...register('url')}
         type="text"
+        placeholder="https://username:password@rpc.example.com"
         className={clsx(
-          "block w-full rounded-md border p-3 pr-16 shadow-sm outline-none",
+          'block w-full rounded-md border p-3 pr-16 shadow-sm outline-none',
           errors.url
-            ? "border-issue-dark text-issue-dark"
-            : "border-gray-65 text-gray-90"
+            ? 'border-issue-dark text-issue-dark'
+            : 'border-gray-65 text-gray-90'
         )}
       />
 
@@ -172,7 +183,7 @@ function NetworkSelectPanel({
   networks,
   onChange,
   value,
-}: Omit<NetworkSelectProps, "version">) {
+}: Omit<NetworkSelectProps, 'version'>) {
   const isCustomNetwork = !networks.find(({ id }) => id === value);
   const [customOpen, setCustomOpen] = useState(isCustomNetwork);
 
@@ -212,7 +223,7 @@ function NetworkSelectPanel({
         {customOpen && (
           <div className="mt-3">
             <CustomRPCInput
-              value={isCustomNetwork ? value : ""}
+              value={isCustomNetwork ? value : ''}
               onChange={onChange}
             />
           </div>

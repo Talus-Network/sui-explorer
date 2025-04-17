@@ -1,21 +1,23 @@
 // Copyright (c) Mysten Labs, Inc.
 // SPDX-License-Identifier: Apache-2.0
 
-import { createContext, useContext, useMemo } from "react";
+import { createContext, useContext, useMemo } from 'react';
 // eslint-disable-next-line no-restricted-imports
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams } from 'react-router-dom';
 
-import { Network } from "./utils/api/DefaultRpcClient";
-import { queryClient } from "./utils/queryClient";
+import { Network } from './utils/api/DefaultRpcClient';
+import { queryClient } from './utils/queryClient';
+import { useAuth } from './contexts/AuthContext';
 
 // See also /apps/explorer/public/env-config.js
 // See also /docker-entrypoint.sh
 // See also /apps/explorer/src/types/env.d.ts
-export const DEFAULT_NETWORK = window.__ENV__?.SUI_RPC_URL || "";
+export const DEFAULT_NETWORK = window.__ENV__?.SUI_RPC_URL || '';
+export const USE_AUTH = window.__ENV__?.USE_AUTH;
 
 export const NetworkContext = createContext<
   [Network | string, (network: Network | string) => void]
->(["", () => null]);
+>(['', () => null]);
 
 export function useNetworkContext() {
   return useContext(NetworkContext);
@@ -24,17 +26,16 @@ export function useNetworkContext() {
 // TODO: Remove this flexibility.
 export function useNetwork(): [string, (network: Network | string) => void] {
   const [searchParams, setSearchParams] = useSearchParams();
+  const { credentials } = useAuth();
 
   const network = useMemo(() => {
-    const networkParam = searchParams.get("network");
-
+    const networkParam = searchParams.get('network');
     if (
       networkParam &&
       (Object.values(Network) as string[]).includes(networkParam.toUpperCase())
     ) {
       return networkParam.toUpperCase();
     }
-
     return networkParam ?? DEFAULT_NETWORK;
   }, [searchParams]);
 
@@ -42,7 +43,6 @@ export function useNetwork(): [string, (network: Network | string) => void] {
     // When resetting the network, we reset the query client at the same time:
     queryClient.cancelQueries();
     queryClient.clear();
-
     setSearchParams({ network: network.toLowerCase() });
   };
 

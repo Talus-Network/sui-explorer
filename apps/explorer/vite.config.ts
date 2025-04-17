@@ -5,7 +5,7 @@
 import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
 import svgr from 'vite-plugin-svgr';
-import { configDefaults } from "vitest/config";
+import { configDefaults } from 'vitest/config';
 
 process.env.VITE_VERCEL_ENV = process.env.VERCEL_ENV || 'development';
 
@@ -14,19 +14,19 @@ export default defineConfig({
   plugins: [react(), svgr()],
   test: {
     // Omit end-to-end tests:
-    exclude: [...configDefaults.exclude, "tests/**"],
+    exclude: [...configDefaults.exclude, 'tests/**'],
     css: true,
     globals: true,
-    environment: "happy-dom",
+    environment: 'happy-dom',
   },
   build: {
     // Set the output directory to match what CRA uses:
-    outDir: "build",
+    outDir: 'dist',
     sourcemap: true,
   },
   resolve: {
     alias: {
-      "~": new URL("./src", import.meta.url).pathname,
+      '~': new URL('./src', import.meta.url).pathname,
     },
   },
 });

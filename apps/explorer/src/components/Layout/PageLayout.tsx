@@ -1,22 +1,22 @@
 // Copyright (c) Mysten Labs, Inc.
 // SPDX-License-Identifier: Apache-2.0
 
-import { useAppsBackend, useElementDimensions } from "@mysten/core";
-import { LoadingIndicator } from "@mysten/ui";
-import { useQuery } from "@tanstack/react-query";
-import clsx from "clsx";
-import { useRef, type ReactNode } from "react";
+import { useAppsBackend, useElementDimensions } from '@mysten/core';
+import { LoadingIndicator } from '@mysten/ui';
+import { useQuery } from '@tanstack/react-query';
+import clsx from 'clsx';
+import { useRef, type ReactNode } from 'react';
 
-import { useNetworkContext } from "~/context";
-import { Banner } from "~/ui/Banner";
-import { Network } from "~/utils/api/DefaultRpcClient";
-import Header from "../header/Header";
-import Footer from "../footer/Footer";
+import { useNetworkContext } from '~/context';
+import { Banner } from '~/ui/Banner';
+import { Network } from '~/utils/api/DefaultRpcClient';
+import Header from '../header/Header';
+import Footer from '../footer/Footer';
 
 export type PageLayoutProps = {
   gradient?: {
     content: ReactNode;
-    size: "lg" | "md";
+    size: 'lg' | 'md';
   };
   isError?: boolean;
   content: ReactNode;
@@ -36,10 +36,10 @@ export function PageLayout({
   const outageOverride = false;
 
   const { data } = useQuery({
-    queryKey: ["apps-backend", "monitor-network"],
+    queryKey: ['apps-backend', 'monitor-network'],
     queryFn: () =>
-      request<{ degraded: boolean }>("monitor-network", {
-        project: "EXPLORER",
+      request<{ degraded: boolean }>('monitor-network', {
+        project: 'EXPLORER',
       }),
     // Keep cached for 2 minutes:
     staleTime: 2 * 60 * 1000,
@@ -54,7 +54,7 @@ export function PageLayout({
 
   const networkDegradeBannerCopy =
     network === Network.TESTNET
-      ? "Sui Explorer (Testnet) is currently under-going maintenance. Some data may be incorrect or missing."
+      ? 'Sui Explorer (Testnet) is currently under-going maintenance. Some data may be incorrect or missing.'
       : "The explorer is running slower than usual. We're working to fix the issue and appreciate your patience.";
 
   return (
@@ -91,17 +91,17 @@ export function PageLayout({
               paddingTop: `${headerHeight}px`,
             }}
             className={clsx(
-              "group/gradientContent",
-              loading && "bg-gradients-graph-cards",
-              isError && "bg-gradients-failure",
-              !isError && "bg-gradients-graph-cards"
+              'group/gradientContent',
+              loading && 'bg-gradients-graph-cards',
+              isError && 'bg-gradients-failure',
+              !isError && 'bg-gradients-graph-cards'
             )}
           >
             <div
               className={clsx(
-                "mx-auto max-w-[1440px] py-8 lg:px-6 xl:px-10",
-                gradient.size === "lg" && "px-4 xl:py-12",
-                gradient.size === "md" && "px-4"
+                'mx-auto max-w-[1440px] py-8 lg:px-6 xl:px-10',
+                gradient.size === 'lg' && 'px-4 xl:py-12',
+                gradient.size === 'md' && 'px-4'
               )}
             >
               {gradient.content}

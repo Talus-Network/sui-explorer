@@ -1,29 +1,28 @@
 // Copyright (c) Mysten Labs, Inc.
 // SPDX-License-Identifier: Apache-2.0
 
-import { SuiClientProvider, WalletProvider } from "@mysten/dapp-kit";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import { Fragment } from "react";
-import { Toaster, resolveValue, type ToastType } from "react-hot-toast";
+import { SuiClientProvider, WalletProvider } from '@mysten/dapp-kit';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { Fragment } from 'react';
+import { Toaster, resolveValue, type ToastType } from 'react-hot-toast';
 import { Outlet, ScrollRestoration } from 'react-router-dom';
 
-import { KioskClientProvider } from "@mysten/core/src/components/KioskClientProvider";
-import { NetworkContext, useNetwork } from "~/context";
-import { Banner, type BannerProps } from "~/ui/Banner";
+import { KioskClientProvider } from '@mysten/core/src/components/KioskClientProvider';
+import { NetworkContext, useNetwork } from '~/context';
+import { Banner, type BannerProps } from '~/ui/Banner';
 import {
   NetworkConfigs,
   createSuiClient,
   type Network,
-} from "~/utils/api/DefaultRpcClient";
+} from '~/utils/api/DefaultRpcClient';
 
-const toastVariants: Partial<Record<ToastType, BannerProps["variant"]>> = {
-  success: "positive",
-  error: "error",
+const toastVariants: Partial<Record<ToastType, BannerProps['variant']>> = {
+  success: 'positive',
+  error: 'error',
 };
 
 export function Layout() {
   const [network, setNetwork] = useNetwork();
-
   return (
     // NOTE: We set a top-level key here to force the entire react tree to be re-created when the network changes:
     <Fragment key={network}>

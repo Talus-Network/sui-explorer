@@ -6,6 +6,7 @@ interface Window {
   // See also: /docker-entrypoint.sh
   __ENV__?: {
     SUI_RPC_URL?: string;
+    USE_AUTH?: boolean;
     // Add other runtime config variables here
   };
 }
