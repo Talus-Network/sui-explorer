@@ -43,35 +43,6 @@ export function useNetwork(): [string, (network: Network | string) => void] {
     // When resetting the network, we reset the query client at the same time:
     queryClient.cancelQueries();
     queryClient.clear();
-    // Apply credentials to URLs if available
-    if (typeof network === 'string' && network.includes('://') && credentials) {
-      try {
-        const url = new URL(network);
-        // Only set credentials if not already present in the URL
-        if (!url.username && !url.password) {
-          url.username = credentials.username;
-          url.password = credentials.password;
-          setSearchParams({ network: url.toString() });
-          return;
-        }
-      } catch (e) {
-        // Invalid URL, fall through to default behavior
-      }
-    }
-
-    // Handle URLs with auth credentials without lowercasing
-    if (typeof network === 'string' && network.includes('://')) {
-      try {
-        const url = new URL(network);
-        if (url.username || url.password) {
-          setSearchParams({ network });
-          return;
-        }
-      } catch (e) {
-        // Invalid URL, fall through to default behavior
-      }
-    }
-
     setSearchParams({ network: network.toLowerCase() });
   };
 

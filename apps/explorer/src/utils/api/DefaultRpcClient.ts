@@ -45,33 +45,11 @@ export const createSuiClient = (
 
   // Check if URL contains embedded credentials
   let username, password;
-  try {
-    const urlObj = new URL(networkUrl);
-
-    // Extract credentials from URL if present
-    if (urlObj.username && urlObj.password) {
-      username = urlObj.username;
-      password = urlObj.password;
-
-      // Remove credentials from URL for the actual connection
-      urlObj.username = '';
-      urlObj.password = '';
-      networkUrl = urlObj.toString();
-      transportOptions.url = networkUrl;
-    }
-  } catch (e) {
-    // If URL parsing fails, continue with original URL
-  }
 
   // Use provided credentials if available
   if (credentials?.username && credentials?.password) {
     username = credentials.username;
     password = credentials.password;
-  }
-  // Fall back to environment variables if no credentials in URL
-  if (!username || !password) {
-    username = username || import.meta.env?.VITE_SUI_RPC_USERNAME;
-    password = password || import.meta.env?.VITE_SUI_RPC_PASSWORD;
   }
 
   // Add basic auth headers if credentials are found
