@@ -2,8 +2,8 @@ name := 'sui-explorer'
 version := 'latest'
 tag := name + ':' + version
 port := '8080'
-sui_rpc_url := 'https://fullnode.testnet.sui.io'
-
+sui_rpc_url := 'https://fullnode.mainnet.sui.io'
+use_auth := 'false'
 
 @_default:
     just --list
@@ -16,7 +16,7 @@ docker-build:
 alias start := docker-start
 # Run the explorer image
 docker-start:
-    docker run --name {{name}} --rm -d -p {{port}}:80 -e SUI_RPC_URL={{sui_rpc_url}} {{tag}}
+    docker run --name {{name}} --rm -d -p {{port}}:80 -e SUI_RPC_URL={{sui_rpc_url}} -e USE_AUTH={{use_auth}} {{tag}}
 
 alias stop := docker-stop
 # Stop the explorer container

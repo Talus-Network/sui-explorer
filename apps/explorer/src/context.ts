@@ -13,6 +13,8 @@ import { useAuth } from './contexts/AuthContext';
 // See also /docker-entrypoint.sh
 // See also /apps/explorer/src/types/env.d.ts
 export const DEFAULT_NETWORK = window.__ENV__?.SUI_RPC_URL || '';
+export const USE_AUTH = window.__ENV__?.USE_AUTH;
+
 export const NetworkContext = createContext<
   [Network | string, (network: Network | string) => void]
 >(['', () => null]);

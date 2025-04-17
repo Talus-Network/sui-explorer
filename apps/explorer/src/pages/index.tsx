@@ -17,8 +17,9 @@ import { Recent } from './recent';
 import TransactionResult from './transaction-result/TransactionResult';
 import { ValidatorDetails } from './validator/ValidatorDetails';
 import { ValidatorPageResult } from './validators/Validators';
-import { useAuth } from '~/contexts/AuthContext'; // Import the auth hook
-import { Login } from './login'; // Import the login component you'll create
+import { useAuth } from '~/contexts/AuthContext';
+import { Login } from './login';
+import { USE_AUTH } from '~/context';
 
 // Protected route wrapper component
 function ProtectedRoute() {
@@ -42,53 +43,70 @@ function RedirectWithId({ base }: { base: string }) {
   return <Navigate to={`/${base}/${params.id}${search}`} replace />;
 }
 
-export const router = createBrowserRouter([
+// Define the main application routes
+const appRoutes = [
   {
-    path: '/login',
-    element: <Login />,
-  },
-  {
-    path: '/',
-    element: <ProtectedRoute />,
+    element: <Layout />,
     children: [
-      {
-        element: <Layout />,
-        children: [
-          { path: '/', element: <Home /> },
-          { path: 'recent', element: <Recent /> },
-          { path: 'object/:id', element: <ObjectResult /> },
-          { path: 'checkpoint/:id', element: <CheckpointDetail /> },
-          { path: 'txblock/:id', element: <TransactionResult /> },
-          { path: 'address/:id', element: <AddressResult /> },
-          { path: 'validators', element: <ValidatorPageResult /> },
-          { path: 'validator/:id', element: <ValidatorDetails /> },
-          { path: 'experimental--id/:id', element: <IdPage /> },
-        ],
-      },
-      {
-        path: '/transactions',
-        element: <Navigate to="/recent" replace />,
-      },
-      // Support legacy routes:
-      {
-        path: '/objects/:id',
-        element: <RedirectWithId base="object" />,
-      },
-      {
-        path: '/transaction/:id',
-        element: <RedirectWithId base="txblock" />,
-      },
-      {
-        path: '/transactions/:id',
-        element: <RedirectWithId base="txblock" />,
-      },
-      {
-        path: '/addresses/:id',
-        element: <RedirectWithId base="address" />,
-      },
+      { path: '/', element: <Home /> },
+      { path: 'recent', element: <Recent /> },
+      { path: 'object/:id', element: <ObjectResult /> },
+      { path: 'checkpoint/:id', element: <CheckpointDetail /> },
+      { path: 'txblock/:id', element: <TransactionResult /> },
+      { path: 'address/:id', element: <AddressResult /> },
+      { path: 'validators', element: <ValidatorPageResult /> },
+      { path: 'validator/:id', element: <ValidatorDetails /> },
+      { path: 'experimental--id/:id', element: <IdPage /> },
     ],
   },
+  {
+    path: '/transactions',
+    element: <Navigate to="/recent" replace />,
+  },
+  // Support legacy routes:
+  {
+    path: '/objects/:id',
+    element: <RedirectWithId base="object" />,
+  },
+  {
+    path: '/transaction/:id',
+    element: <RedirectWithId base="txblock" />,
+  },
+  {
+    path: '/transactions/:id',
+    element: <RedirectWithId base="txblock" />,
+  },
+  {
+    path: '/addresses/:id',
+    element: <RedirectWithId base="address" />,
+  },
+];
 
-  // 404 route:
-  { path: '*', element: <Navigate to="/" replace /> },
-]);
+// Conditionally create the router based on USE_AUTH
+export const router = createBrowserRouter(
+  USE_AUTH
+    ? [
+        // Include login route when authentication is required
+        {
+          path: '/login',
+          element: <Login />,
+        },
+        // Wrap app routes with ProtectedRoute when authentication is required
+        {
+          path: '/',
+          element: <ProtectedRoute />,
+          children: appRoutes,
+        },
+        // 404 route
+        { path: '*', element: <Navigate to="/" replace /> },
+      ]
+    : [
+        // When authentication is not required, routes are accessible directly
+        {
+          path: '/',
+          children: appRoutes,
+        },
+        // 404 route
+        { path: '*', element: <Navigate to="/" replace /> },
+      ]
+);
