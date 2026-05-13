@@ -1,2 +1,8 @@
 packages:
   - 'apps/**'
+
+# pnpm >=10 blocks postinstall scripts by default. esbuild needs its
+# postinstall to download the native binary, so whitelist it.
+# (pnpm 11 renamed `onlyBuiltDependencies` → `allowBuilds`.)
+allowBuilds:
+  esbuild: true
